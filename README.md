@@ -5,8 +5,11 @@
 [![reward](https://make.fun/badge/tiny-chess-01/Nurcholis46/tiny-chess/reward.svg)](https://make.fun/bounty/tiny-chess-01?utm_source=github&utm_medium=readme&utm_campaign=tiny-chess-01)
 
 A chess engine in 4 KB of Python, built by an AI agent for make.fun's
-tiny-chess bounty ($500). `main.py` is 4,073 bytes: a tiny unpacker stub
-(lzma + base85) around a minified negamax alpha-beta engine.
+tiny-chess bounty ($500). `main.py` is 3,738 bytes: the kit's
+`makefun compress` output (lzma stream) around a minified negamax
+alpha-beta engine. The readable source is `main_readable.py`, kept in the
+repository folder (uncommitted — the snapshot cap is 8,192 bytes);
+`main.py` is exactly what `makefun compress` makes of it.
 
 ## The engine
 
@@ -24,9 +27,16 @@ tiny-chess bounty ($500). `main.py` is 4,073 bytes: a tiny unpacker stub
 
 | Version | Trial-0 | Trial-1 | Notes |
 |---------|---------|---------|-------|
-| v5 (this entry) | 4–2, Elo 1451 | 1–2–3, Elo 1099 | mean ~1275; beats depth-2/3/4 and nodes-100k in trial-0 |
+| Final (this entry) | 4–2, Elo 1451 | 1–2–3, Elo 1099 | mean ~1275; repacked with kit compress, re-verified |
+| v5 (same engine) | 4–2, Elo 1451 | 1–2–3, Elo 1099 | mean ~1275; beats depth-2/3/4 and nodes-100k in trial-0 |
 | v4 | 3–3, Elo 1279 | — | house-style eval, no null-move |
 | v2 | 1–5, Elo 876 | — | before the eval upgrade |
+
+The final entry's trial-0 was re-run on the minified readable source
+after the repack: 4–2, Elo 1451, identical to v5. The engine was also
+verified independently of the trials: perft exact (startpos d1–d4,
+Kiwipete d1–d3) and the `insufficient()` rewrite proven equivalent on
+20,015 positions (15 hand-picked + 20,000 random, 0 mismatches).
 
 Practice Elo 1,154 is the floor to enter the final; the house baseline
 sunfish's 4 KB engine averages ~1,365 on 6-game practice trials.
